@@ -22,27 +22,27 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<div class="row">
   	  <div class="col-md-1"></div>
   	  <div class="col-md-10">
-  	  	<!-- 展示用户列表 -->
+  	  	<!-- 展示商品列表 -->
 	    <table class="table table-striped table-hover">
 		  <tr>
 			<th>序号</th>
-			<th>账号</th>
-			<th>姓名</th>
+			<th>名称</th>
+			<th>价格</th>
 			<th>查看</th>
 			<th>删除</th>
 		  </tr>
-		  <c:forEach items="${users}" var="u" varStatus="st">
+		  <c:forEach items="${products}" var="p" varStatus="st">
 			<tr>
 				<td>${ (page.index-1)*page.count+st.index+1}</td>
-				<td>${ u.username }</td>
-				<td>${ u.realName }</td>
+				<td>${ p.name }</td>
+				<td>${ p.price }</td>
 				<td>
-				  <a href="<%= basePath %>back/userDetail?id=${ u.id }" class="btn btn-info">
+				  <a href="<%= basePath %>back/userDetail?id=${ p.id }" class="btn btn-info">
 				    <span class="glyphicon glyphicon-eye-open"></span>
 				  </a>
 				</td>
 				<td>
-				  <a href="<%= basePath %>back/deleteUser?id=${ u.id }" class="btn btn-danger">
+				  <a href="<%= basePath %>back/deleteUser?id=${ p.id }" class="btn btn-danger">
 				    <span class="glyphicon glyphicon-trash"></span>
 				  </a>
 				</td>

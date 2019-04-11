@@ -105,7 +105,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					    <div class="panel-body">	
 							<p>
 								<span class="glyphicon glyphicon-record"></span>
-								<a href="nav1.html" target="mainFrame">商品列表</a>
+								<a href="<%= basePath %>back/productList" target="mainFrame">商品列表</a>
 							</p>
 							<p>
 								<span class="glyphicon glyphicon-record"></span>
