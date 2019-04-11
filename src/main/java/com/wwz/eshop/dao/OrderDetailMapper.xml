@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wwz.eshop.dao.OrderDetailMapper" >
+
+	<!-- 一对一属性集映射 -->
+	<!-- 这里的column对应的是下面查询的别名，而不是表字段名 -->
+	<!-- property对应JavaBean中的属性名 -->
+	<resultMap type="OrderDetail" id="orderDetailMap">
+		<id column="id" property="id"/>
+		<result column="color" property="color"/>
+		<result column="version" property="version"/>
+		<result column="meal" property="meal"/>
+		<result column="num" property="num"/>
+		<association property="product" column="product_id" javaType="Product"
+			select="com.wwz.eshop.dao.ProductMapper.getProduct" >
+		<!-- 这里要注意的是column对应的是product中的外键，而且需是表字段名 -->
+		</association>
+	</resultMap>
+
+	<!-- 添加订单详情 -->
+	<insert id="addOrderDetail" parameterType="OrderDetail">
+    	insert into order_detail(order_id,product_id,color,version,meal,num) 
+    	values(#{order_id},#{product_id},#{color},#{version},#{meal},#{num})	
+    </insert>
+    
+    <!-- 通过ID删除订单详情 -->
+    <delete id="deleteOrderDetail" parameterType="int">
+   		delete from order_detail
+   		where order_id=#{order_id}
+    </delete>
+
+    <!-- 通过订单ID查询订单详情列表 -->
+    <select id="selectAllOrderDetailById" resultMap="orderDetailMap" parameterType="int">
+    	select * from order_detail
+    	where order_id=#{order_id}
+    </select>
+
+</mapper>

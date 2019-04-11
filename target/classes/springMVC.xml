@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:mvc="http://www.springframework.org/schema/mvc"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans 
+http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+http://www.springframework.org/schema/context 
+http://www.springframework.org/schema/context/spring-context-3.0.xsd 
+http://www.springframework.org/schema/mvc 
+http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd">
+
+ 	<!-- 配置自动扫描的包 --> 
+    <context:component-scan base-package="com.wwz.eshop.controller">
+          <context:include-filter type="annotation"
+          expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+ 
+ 	<!-- 启用MVC注解驱动 -->
+    <mvc:annotation-driven />
+     
+     <!-- 配置允许对静态资源文件的访问 -->
+    <mvc:default-servlet-handler />
+    
+    <!--配置静态资源映射,防止静态资源被拦截  -->
+	<mvc:resources location="/static/" mapping="/static/**"/>
+ 
+ 	<!-- 视图解析器 -->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/jsp/" />
+        <property name="suffix" value=".jsp" />
+    </bean>
+    
+    <!--然后通过 Spring的HandlerExceptionResolver去进行全局捕获，不论你在系统哪里去throw，
+    	只要实现了 HandlerExceptionResovler这个接口，Spring都会拦截下异常进行处理  -->
+	<bean id="exceptionResolver" class="com.wwz.eshop.exception.CustomExceptionResolver"></bean>
+	
+	<!-- 配置拦截器 -->
+     <mvc:interceptors>  
+	      <!-- 配置前台登陆拦截器 -->  
+	      <mvc:interceptor>  
+            <mvc:mapping path="/**"/>
+            <!-- 但是排除下面这些，也就是不拦截请求 -->
+            <mvc:exclude-mapping path="/login"/>
+            <mvc:exclude-mapping path="/toLogin"/>
+            <mvc:exclude-mapping path="/register"/>
+            <mvc:exclude-mapping path="/toRegister"/>
+            <mvc:exclude-mapping path="/index"/>
+            <mvc:exclude-mapping path="/selectProductByCategoryId"/>
+            <mvc:exclude-mapping path="/showProductDetail"/>
+            <!-- ajax请求的action不进行拦截 -->
+            <mvc:exclude-mapping path="/*.ajax"/>
+            <!-- 静态资源请求不进行拦截 -->
+            <mvc:exclude-mapping path="/static/**"/>
+            <!-- 后台请求不进行拦截，有下一个拦截器拦截 -->
+            <mvc:exclude-mapping path="/home"/>
+            <mvc:exclude-mapping path="/back/**"/>
+            
+	        <bean class="com.wwz.eshop.interceptor.LoginInterceptor"></bean>  
+	      </mvc:interceptor>
+	      
+	      <!-- 配置后台登陆拦截器 -->  
+	      <mvc:interceptor>  
+            <mvc:mapping path="/home"/>
+            <mvc:mapping path="/back/**"/>
+            <!-- 但是排除下面这些，也就是不拦截请求 -->
+            <mvc:exclude-mapping path="/back/login"/>
+            <mvc:exclude-mapping path="/back/toLogin"/>
+            <mvc:exclude-mapping path="/back/register"/>
+            <mvc:exclude-mapping path="/back/toRegister"/>
+            <!-- ajax请求的action不进行拦截 -->
+            <mvc:exclude-mapping path="/back/*.ajax"/>
+            <!-- 静态资源请求不进行拦截 -->
+            <mvc:exclude-mapping path="/static/**"/>
+            
+	        <bean class="com.wwz.eshop.interceptor.BackLoginInterceptor"></bean>  
+	      </mvc:interceptor>  
+ 	</mvc:interceptors>  
+</beans>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wwz.eshop.dao.UserMapper" >
+
+	<!-- 添加用户 -->
+	<insert id="addUser" parameterType="User">
+    	insert into user(username,password,realName,sex,email,phone,address,regDate) 
+    	values(#{username},#{password},#{realName},#{sex},#{email},#{phone},#{address},#{regDate})	
+    </insert>
+    
+    <!-- 通过ID删除用户 -->
+    <delete id="deleteUser" parameterType="int">
+   		delete from user
+   		where id=#{id}
+    </delete>
+    
+    <!-- 修改用户 -->
+    <update id="updateUser" parameterType="User">
+    	update User 
+    	set username=#{username},password=#{password},realName=#{realName},
+    		sex=#{sex},email=#{email},phone=#{phone},address=#{address},regDate=#{regDate}
+    	where id=#{id}
+    </update>
+    
+    <!-- 通过ID查询用户 -->
+    <select id="getUserById" parameterType="int" resultType="User">
+    	select * from user
+    	where id=#{id}
+    </select>
+
+    <!-- 查询所有用户 -->
+    <select id="selectAllUser" resultType="User">
+    	select * from user
+    </select>
+    
+    <!-- 通过username和password查询用户（登录） -->
+    <select id="getUser" parameterType="User" resultType="User">
+    	select * from user
+    	where username=#{username} and password=#{password}
+    </select>
+    
+    <!-- 通过用户账号(username)查看这个账号是否存在 -->
+    <select id="selectByUsername" parameterType="String" resultType="User">
+    	select * from user
+    	where username=#{username}
+    </select>
+
+</mapper>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wwz.eshop.dao.ProductDetailMapper" >
+
+	<!-- 一对多属性集映射 -->
+	<!-- 这里的column对应的是下面查询的别名，而不是表字段名 -->
+	<!-- property对应JavaBean中的属性名 -->
+	<resultMap type="ProductDetail" id="ProductDetailMap">
+		<id column="id" property="id"/>
+		<result column="title" property="title"/>
+		<result column="subTitle" property="subTitle"/>
+		<result column="price" property="price"/>
+		<result column="coupon" property="coupon"/>
+		<result column="serviceDesc" property="serviceDesc"/>
+		<result column="code" property="code"/>
+		<result column="image" property="image"/>
+		
+		<collection property="promotions" column="code" 
+			select="selectPromotions">
+		<!-- 这里要注意的是column对应的是product中的外键，而且需是表字段名 -->
+		</collection>
+		<collection property="colors" column="code" 
+			select="selectColors">
+		<!-- 这里要注意的是column对应的是product中的外键，而且需是表字段名 -->
+		</collection>
+		<collection property="versions" column="code" 
+			select="selectVersions">
+		<!-- 这里要注意的是column对应的是product中的外键，而且需是表字段名 -->
+		</collection>
+		<collection property="meals" column="code" 
+			select="selectMeals">
+		<!-- 这里要注意的是column对应的是product中的外键，而且需是表字段名 -->
+		</collection>
+	</resultMap>
+
+	<!-- 添加商品详情（ -->
+	<insert id="addProductDetail" parameterType="ProductDetail">
+    	insert into product_detail(title,subTitle,price,coupon,serviceDesc,code,image) 
+    	values(#{title},#{subTitle},#{price},#{coupon},#{serviceDesc},#{code},#{image})	
+    </insert>
+    
+    <!-- 通过ID删除商品详情 -->
+    <delete id="deleteProductDetail" parameterType="int">
+   		delete from product_detail
+   		where id=#{id}
+    </delete>
+    
+    <!-- 修改商品详情 -->
+    <update id="updateProductDetail" parameterType="ProductDetail">
+    	update product_detail 
+    	set title=#{title},subTitle=#{subTitle},price=#{price},coupon=#{coupon},serviceDesc=#{serviceDesc},code=#{code},image=#{image}
+    	where id=#{id}
+    </update>
+
+    <!-- 查询所有商品详情 -->
+    <select id="selectAllProductDetail" resultType="ProductDetail">
+    	select * from product_detail
+    </select>
+    
+    <!-- 通过ID查询商品详情信息 -->
+    <select id="getProductDetail" parameterType="int" resultMap="ProductDetailMap">
+    	select * from product_detail
+    	where id=#{id}
+    </select>
+    
+    
+    <!-- 通过code查询促销（一对多） -->
+    <select id="selectPromotions" parameterType="String" resultType="Promotion">
+    	select promotion from promotion
+    	where code=#{code}
+    </select>
+    
+    <!-- 通过code查询颜色（一对多） -->
+    <select id="selectColors" parameterType="String" resultType="Color">
+    	select image,color from color
+    	where code=#{code}
+    </select>
+    
+    <!-- 通过code查询版本（一对多） -->
+    <select id="selectVersions" parameterType="String" resultType="Version">
+    	select version from version
+    	where code=#{code}
+    </select>
+    
+	<!-- 通过code查询套餐（一对多） -->
+    <select id="selectMeals" parameterType="String" resultType="Meal">
+    	select meal from meal
+    	where code=#{code}
+    </select>
+    
+</mapper>

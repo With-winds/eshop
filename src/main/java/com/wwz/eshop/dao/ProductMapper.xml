@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wwz.eshop.dao.ProductMapper" >
+
+	<!-- 多对一属性集映射 -->
+	<!-- 这里的column对应的是下面查询的别名，而不是表字段名 -->
+	<!-- property对应JavaBean中的属性名 -->
+	<resultMap type="Product" id="productMap">
+		<id column="id" property="id"/>
+		<result column="name" property="name"/>
+		<result column="price" property="price"/>
+		<result column="image" property="image"/>
+		<result column="commentNum" property="commentNum"/>
+		<collection property="category" column="category_id" javaType="Category"
+			select="com.wwz.eshop.dao.CategoryMapper.getCategory" >
+		<!-- 这里要注意的是column对应的是product中的外键，而且需是表字段名 -->
+		</collection>
+	</resultMap>
+
+	<!-- 添加商品 -->
+	<insert id="addProduct" parameterType="Product">
+    	insert into product(name,price,image,commentNum,category_id) 
+    	values(#{name},#{price},#{image},#{commentNum},#{category_id})	
+    </insert>
+    
+    <!-- 通过ID删除商品 -->
+    <delete id="deleteProduct" parameterType="int">
+   		delete from product
+   		where id=#{id}
+    </delete>
+    
+    <!-- 修改商品 -->
+    <update id="updateProduct" parameterType="Product">
+    	update product set name=#{name},price=#{price},image=#{image},commentNum=#{commentNum},category_id=#{category_id}
+    	where id=#{id}
+    </update>
+
+    <!-- 查询所有商品 -->
+    <select id="selectAllProduct" resultType="Product">
+    	select * from product
+    </select>
+    
+    <!-- 通过ID查询商品 -->
+    <select id="getProduct" parameterType="int" resultMap="productMap">
+    	select * from product
+    	where id=#{id}
+    </select>
+    
+    <!-- 通过category_id(二级分类ID)查询商品列表 -->
+    <select id="selectProductByCategoryId" parameterType="int" resultMap="productMap">
+    	select * from product
+    	where category_id=#{category_id}
+    </select>
+
+</mapper>

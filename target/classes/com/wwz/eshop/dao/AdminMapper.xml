@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wwz.eshop.dao.AdminMapper" >
+
+	<!-- 添加管理员 -->
+	<insert id="addAdmin" parameterType="Admin">
+    	insert into admin(username,password,realName,regDate) 
+    	values(#{username},#{password},#{realName},#{regDate})	
+    </insert>
+    
+    <!-- 通过ID删除管理员 -->
+    <delete id="deleteAdmin" parameterType="int">
+   		delete from admin
+   		where id=#{id}
+    </delete>
+    
+    <!-- 修改管理员 -->
+    <update id="updateAdmin" parameterType="Admin">
+    	update admin 
+    	set username=#{username},password=#{password},realName=#{realName},regDate=#{regDate}
+    	where id=#{id}
+    </update>
+    
+    <!-- 通过ID查询管理员 -->
+    <select id="getAdminById" parameterType="int" resultType="Admin">
+    	select * from admin
+    	where id=#{id}
+    </select>
+
+    <!-- 查询所有管理员 -->
+    <select id="selectAllAdmin" resultType="Admin">
+    	select * from admin
+    </select>
+    
+    <!-- 通过username和password查询管理员（登录） -->
+    <select id="getAdmin" parameterType="Admin" resultType="Admin">
+    	select * from admin
+    	where username=#{username} and password=#{password}
+    </select>
+    
+    <!-- 通过管理员账号(username)查看这个账号是否存在 -->
+    <select id="selectByUsername" parameterType="String" resultType="Admin">
+    	select * from admin
+    	where username=#{username}
+    </select>
+    
+</mapper>

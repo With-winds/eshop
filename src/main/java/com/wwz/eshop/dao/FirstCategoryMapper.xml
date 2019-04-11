@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wwz.eshop.dao.FirstCategoryMapper" >
+
+	<!-- 一对多属性集映射 -->
+	<!-- 这里的column对应的是下面查询的别名，而不是表字段名 -->
+	<!-- property对应JavaBean中的属性名 -->
+	<resultMap type="FirstCategory" id="FirstCategoryMap">
+		<id column="id" property="id"/>
+		<result column="name" property="name"/>
+		<collection property="categories" ofType="Category">
+			<id column="cid" property="id"/>
+			<result column="cname" property="name"/>
+			<result column="icon" property="icon"/>
+		</collection>
+	</resultMap>
+
+	<!-- 添加一级分类 -->
+	<insert id="addFirstCategory" parameterType="FirstCategory">
+    	insert into first_category(name) 
+    	values(#{name})	
+    </insert>
+    
+    <!-- 通过ID删除一级分类-->
+    <delete id="deleteFirstCategory" parameterType="int">
+   		delete from first_category
+   		where id=#{id}
+    </delete>
+    
+    <!-- 修改一级分类 -->
+    <update id="updateFirstCategory" parameterType="FirstCategory">
+    	update first_category set name=#{name}
+    	where id=#{id}
+    </update>
+
+    <!-- 查询所有一级分类 -->
+    <select id="selectAllFirstCategory" resultType="FirstCategory">
+    	select * from first_category
+    </select>
+    
+    <!-- 通过ID查询一级分类-->
+    <select id="getFirstCategory" parameterType="int" resultType="FirstCategory">
+    	select * from first_category
+    	where id=#{id}
+    </select>
+    
+    <!-- 查询一级分类和二级分类的集合 -->
+    <select id="selectFirstCategoryMap" resultMap="FirstCategoryMap">
+    	select fc.*,c.id cid,c.name cname,c.icon
+		from first_category fc
+		left join category c on fc.id=c.first_category_id
+    </select>
+
+</mapper>

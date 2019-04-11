@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wwz.eshop.dao.OrderInfoMapper" >
+
+	<!-- 添加订单 -->
+	<insert id="addOrderInfo" parameterType="OrderInfo" useGeneratedKeys="true" keyProperty="id">
+		<selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">  
+        	SELECT LAST_INSERT_ID()  
+    	</selectKey> 
+    	insert into order_info(user_id,status,orderTime,totalNum,totalPrice) 
+    	values(#{user_id},#{status},#{orderTime},#{totalNum},#{totalPrice})	
+    	
+    </insert>
+    
+    <!-- 通过ID删除订单 -->
+    <delete id="deleteOrderInfo" parameterType="int">
+   		delete from order_info
+   		where id=#{id}
+    </delete>
+
+    <!-- 通过用户ID查询我的订单 -->
+    <select id="selectOrderById" resultType="OrderInfo">
+    	select * from order_info
+    	where user_id=#{user_id}
+    </select>
+
+    <!-- 查询所有订单 -->
+    <select id="selectAllOrderInfo" resultType="OrderInfo">
+    	select * from order_info
+    </select>
+
+</mapper>

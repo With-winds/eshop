@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+  PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+  "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+    <context id="test" targetRuntime="MyBatis3">
+        <plugin type="org.mybatis.generator.plugins.EqualsHashCodePlugin"></plugin>
+        <plugin type="org.mybatis.generator.plugins.SerializablePlugin"></plugin>
+        <plugin type="org.mybatis.generator.plugins.ToStringPlugin"></plugin>
+        
+        <commentGenerator>
+            <!-- 这个元素用来去除指定生成的注释中是否包含生成的日期 false:表示保护 -->
+            <!-- 如果生成日期，会造成即使修改一个字段，整个实体类所有属性都会发生变化，不利于版本控制，所以设置为true -->
+            <property name="suppressDate" value="true" />
+            <!-- 是否去除自动生成的注释 true：是 ： false:否 -->
+            <property name="suppressAllComments" value="true" />
+        </commentGenerator>
+        
+        <!--数据库链接URL，用户名、密码 -->
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+            connectionURL="jdbc:mysql://localhost:3306/eshop" userId="root"
+            password="wwzdjj1314">
+        </jdbcConnection>
+        
+        <javaTypeResolver>
+            <!-- 此属性用于指定MyBatis生成器是否应强制对十进制和数字字段使用 : DECIMAL and NUMERIC fields -->
+            <property name="forceBigDecimals" value="false" />
+        </javaTypeResolver>
+        
+        <!-- 生成实体类的包名和位置 -->
+        <javaModelGenerator targetPackage="com.wwz.eshop.pojo"
+            targetProject="src/main/java">
+            <property name="enableSubPackages" value="true" />
+            <property name="trimStrings" value="true" />
+        </javaModelGenerator>
+        
+        <!-- 生成映射文件的包名和位置 -->
+        <sqlMapGenerator targetPackage="com.wwz.eshop.dao.mapper"
+            targetProject="src/main/java">
+            <property name="enableSubPackages" value="true" />
+        </sqlMapGenerator>
+        
+        <!-- 生成DAO的包名和位置 -->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.wwz.eshop.dao"
+            targetProject="src/main/java">
+            <property name="enableSubPackages" value="true" />
+        </javaClientGenerator>
+ 
+        <!-- 要生成哪些表 -->
+        <table tableName="`admin`" domainObjectName="Admin"></table>
+ 
+        <table tableName="`admin_role`" domainObjectName="AdminRole"></table>
+ 
+        <table tableName="`category`" domainObjectName="Category"></table>
+ 
+        <table tableName="`category_content`" domainObjectName="CategoryContent"></table>
+ 
+        <table tableName="`category_header`" domainObjectName="CategoryHeader"></table>
+ 
+ 		<table tableName="`category_header_value`" domainObjectName="CategoryHeaderValue"></table>
+ 		
+ 		<table tableName="`comment`" domainObjectName="Comment"></table>
+ 		
+ 		<table tableName="`order`" domainObjectName="Order"></table>
+ 		
+ 		<table tableName="`order_detail`" domainObjectName="OrderDetail"></table>
+ 		
+ 		<table tableName="`permission`" domainObjectName="Permission"></table>
+ 		
+ 		<table tableName="`product`" domainObjectName="Product"></table>
+ 		
+ 		<table tableName="`role`" domainObjectName="Role"></table>
+ 		
+ 		<table tableName="`role_permission`" domainObjectName="RolePermission"></table>
+ 		
+ 		<table tableName="`user`" domainObjectName="User"></table>
+ 
+    </context>
+</generatorConfiguration>
